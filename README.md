@@ -2,11 +2,11 @@
 
 ## Features
 
--SQLServer 2022 - 16.0.1110.1
--NET 8.0
--AspNetCore 6.4.0
--SqlClient 4.8.6
--Dapper 2.1.28
+- SQLServer 2022 - 16.0.1110.1
+- NET 8.0
+- AspNetCore 6.4.0
+- SqlClient 4.8.6
+- Dapper 2.1.28
 
 ## Instalación
                 
