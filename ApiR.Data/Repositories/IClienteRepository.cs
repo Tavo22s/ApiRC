@@ -9,13 +9,9 @@ namespace ApiR.Data.Repositories
 {
     public interface IClienteRepository
     {
-        Task<IEnumerable<Cliente>> GetAllClients();
         Task<IEnumerable<Cliente>> GetAllClientsWithCredits();
-        Task<Cliente> GetClientDetails(int id);
-        Task<Cliente> GetClientDetailsWithCredits(int id);
         Task<bool> InsertClient(Cliente cliente);
         Task<bool> UpdateClient(Cliente cliente);
-        Task<IEnumerable<Cliente>> SeachCliente(string search);
         Task<IEnumerable<Cliente>> SearchClienteWithCredits(string search);
     }
 }

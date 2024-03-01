@@ -21,29 +21,7 @@ namespace ApiR.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllClients()
         {
-            var clientes = await _clienteRepository.GetAllClients();
-            return Ok(await _clienteRepository.GetAllClients());
-        }
-
-        [HttpGet]
-        [Route("/api/Cliente/WithCredits")]
-        public async Task<IActionResult> GetAllClientsWhitCredits()
-        {
             var clientes = await _clienteRepository.GetAllClientsWithCredits();
-            var json = SerializeObject(clientes);
-            return Ok(json);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetClientDetails(int id)
-        {
-            return Ok(await _clienteRepository.GetClientDetails(id));
-        }
-
-        [HttpGet("WithCredits/{id}")]
-        public async Task<IActionResult> GetClientDetailsWithCredits(int id)
-        {
-            var clientes = await _clienteRepository.GetClientDetailsWithCredits(id);
             var json = SerializeObject(clientes);
             return Ok(json);
         }
@@ -75,13 +53,6 @@ namespace ApiR.Controllers
         [HttpGet]
         [Route("/api/search/")]
         public async Task<IActionResult> SeachClient(string search)
-        {
-            return Ok(await _clienteRepository.SeachCliente(search));
-        }
-
-        [HttpGet]
-        [Route("/api/searchWithCredits/")]
-        public async Task<IActionResult> SeachClientWithCredits(string search)
         {
             var clientes = await _clienteRepository.SearchClienteWithCredits(search);
             var json = SerializeObject(clientes);
