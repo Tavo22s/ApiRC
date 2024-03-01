@@ -1,0 +1,6 @@
+@ApiR_HostAddress = http://localhost:5003
+
+GET {{ApiR_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34622.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiR", "ApiR\ApiR.csproj", "{400D914E-528E-4439-826B-F98F65B0DBDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiR.Entity", "ApiR.Entity\ApiR.Entity.csproj", "{4CD2001C-2CE6-49AC-8E09-F26B9C101426}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiR.Data", "ApiR.Data\ApiR.Data.csproj", "{A0A89466-5387-4A41-A0B0-36D35A07C735}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{400D914E-528E-4439-826B-F98F65B0DBDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{400D914E-528E-4439-826B-F98F65B0DBDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{400D914E-528E-4439-826B-F98F65B0DBDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{400D914E-528E-4439-826B-F98F65B0DBDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CD2001C-2CE6-49AC-8E09-F26B9C101426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CD2001C-2CE6-49AC-8E09-F26B9C101426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CD2001C-2CE6-49AC-8E09-F26B9C101426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CD2001C-2CE6-49AC-8E09-F26B9C101426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0A89466-5387-4A41-A0B0-36D35A07C735}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0A89466-5387-4A41-A0B0-36D35A07C735}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0A89466-5387-4A41-A0B0-36D35A07C735}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0A89466-5387-4A41-A0B0-36D35A07C735}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {444B8A30-9BA3-4CC0-89D7-22B331E5EBCF}
+	EndGlobalSection
+EndGlobal
