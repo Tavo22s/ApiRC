@@ -17,6 +17,7 @@ namespace ApiR.Entity
         public string FechaNacimiento { get; set; }
         public string LugarNacimiento { get; set; }
         public string PaisResidencia { get; set; }
+        public List<Credito> Creditos { get; set; }
     }
 }
     

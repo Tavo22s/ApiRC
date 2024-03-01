@@ -18,6 +18,19 @@ CREATE TABLE CLIENTE(
 
 GO
 
+CREATE TABLE CREDITO(
+	IdCredito INT PRIMARY KEY IDENTITY,
+	IdCliente INT REFERENCES CLIENTE(IdCliente),
+	Plazo INT,
+	Monto DECIMAL,
+	FrecuenciaPago VARCHAR(50) DEFAULT 'Mensual',
+	Producto VARCHAR(50) CHECK (Producto IN('Consumo', 'Pyme')),
+	FechaDesembolso DATE,
+	FechaPrimeraCuota DATE,
+	DiaPagoMensual INT
+)
+GO
+
 CREATE PROCEDURE SP_REGISTRARCLIENTE(
 	@TipoDocumento VARCHAR(100),
 	@NroDocumento INT,
@@ -58,6 +71,39 @@ AS BEGIN
 		LugarNacimiento = ISNULL(@LugarNacimiento, LugarNacimiento),
 		PaisResidencia = ISNULL(@PaisResidencia, PaisResidencia)
 	WHERE IdCliente = @IdCliente;
+END
+
+GO
+
+CREATE PROCEDURE SP_REGISTRARCREDITO(
+	@IdCliente INT,
+	@Plazo INT,
+	@Monto DECIMAL,
+	@Producto VARCHAR(50),
+	@FechaDesembolso DATE,
+	@FechaPrimeraCuota DATE
+)
+AS BEGIN
+	IF NOT EXISTS (SELECT 1 FROM CLIENTE WHERE IdCliente = @IdCliente)
+	BEGIN
+		RETURN;
+	END
+
+	IF (SELECT COUNT(*) FROM CREDITO WHERE IdCliente = @IdCliente) >= 3
+	BEGIN
+		RETURN;
+	END
+
+	IF @Plazo > 12 OR @Plazo < 1
+	BEGIN
+		RETURN;
+	END
+
+	DECLARE @DiaPagoMensual INT;
+	SET @DiaPagoMensual = DAY(@FechaPrimeraCuota);
+
+	INSERT INTO CREDITO (IdCliente, Plazo, Monto, Producto, FechaDesembolso, FechaPrimeraCuota, DiaPagoMensual)
+	VALUES(@IdCliente, @Plazo, @Monto, @Producto, @FechaDesembolso, @FechaPrimeraCuota, @DiaPagoMensual);
 END
 
 GO

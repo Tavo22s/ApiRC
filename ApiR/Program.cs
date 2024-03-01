@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 var SQLServerConnectionConfig = new Conexion(builder.Configuration.GetConnectionString("Connection"));
 builder.Services.AddSingleton(SQLServerConnectionConfig);
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<ICreditoRepository, CreditoRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

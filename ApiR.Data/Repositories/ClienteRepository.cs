@@ -92,11 +92,165 @@ namespace ApiR.Data.Repositories
         {
             using (var oconexion = new SqlConnection(dbConnection().ConexionString))
             {
-                string query = "SELECT * FROM CLIENTE WHERE TipoDocumento LIKE '%' + @Search + '%';";
+                string query = "SELECT * FROM CLIENTE WHERE TipoDocumento LIKE '%' + @Search + '%' OR NroDocumento LIKE '%' + @Search + '%';";
                 
                 oconexion.Open();
 
                 return await oconexion.QueryAsync<Cliente>(query, new { Search = search });
+            }
+        }
+
+        public async Task<IEnumerable<Cliente>> GetAllClientsWithCredits()
+        {
+            using (var oconexion = new SqlConnection(dbConnection().ConexionString))
+            {
+                string query = @"
+                    SELECT 
+                        C.*,
+                        CR.IdCredito,
+                        CR.Plazo,
+                        CR.Monto,
+                        CR.FrecuenciaPago,
+                        CR.Producto,
+                        CR.FechaDesembolso,
+                        CR.FechaPrimeraCuota,
+                        CR.DiaPagoMensual
+                    FROM 
+                        CLIENTE C 
+                        LEFT JOIN CREDITO CR ON C.IdCliente = CR.IdCliente;";
+
+                oconexion.Open();
+
+                var clientesDictionary = new Dictionary<int, Cliente>();
+
+                var resultados = await oconexion.QueryAsync<Cliente, Credito, Cliente>(
+                    query,
+                    (cliente, credito) =>
+                    {
+                        if (!clientesDictionary.TryGetValue(cliente.IdCliente, out var clienteExistente))
+                        {
+                            clienteExistente = cliente;
+                            clienteExistente.Creditos = new List<Credito>();
+                            clientesDictionary.Add(cliente.IdCliente, clienteExistente);
+                        }
+
+                        if (credito != null)
+                        {
+                            credito.cliente = clienteExistente;
+                            clienteExistente.Creditos.Add(credito);
+                        }
+
+                        return clienteExistente;
+                    },
+                    splitOn: "IdCredito"
+                );
+
+                return clientesDictionary.Values.ToList();
+            }
+        }
+
+        public async Task<Cliente> GetClientDetailsWithCredits(int id)
+        {
+            using (var oconexion = new SqlConnection(dbConnection().ConexionString))
+            {
+                string query = @"
+                    SELECT 
+                        C.*,
+                        CR.IdCredito,
+                        CR.Plazo,
+                        CR.Monto,
+                        CR.FrecuenciaPago,
+                        CR.Producto,
+                        CR.FechaDesembolso,
+                        CR.FechaPrimeraCuota,
+                        CR.DiaPagoMensual
+                    FROM 
+                        CLIENTE C 
+                        LEFT JOIN CREDITO CR ON C.IdCliente = CR.IdCliente
+                        WHERE C.IdCliente=@IdCliente;";
+
+                oconexion.Open();
+
+                var clientesDictionary = new Dictionary<int, Cliente>();
+
+                var resultados = await oconexion.QueryAsync<Cliente, Credito, Cliente>(
+                    query,
+                    (cliente, credito) =>
+                    {
+                        if (!clientesDictionary.TryGetValue(cliente.IdCliente, out var clienteExistente))
+                        {
+                            clienteExistente = cliente;
+                            clienteExistente.Creditos = new List<Credito>();
+                            clientesDictionary.Add(cliente.IdCliente, clienteExistente);
+                        }
+
+                        if (credito != null)
+                        {
+                            credito.cliente = clienteExistente;
+                            clienteExistente.Creditos.Add(credito);
+                        }
+
+                        return clienteExistente;
+                    },
+                    new {IdCliente =  id},
+                    splitOn: "IdCredito"
+                );
+
+                var clienteEspecifico = clientesDictionary.Values.FirstOrDefault(c => c.IdCliente == id);
+
+                return clienteEspecifico;
+            }
+        }
+
+
+        public async Task<IEnumerable<Cliente>> SearchClienteWithCredits(string search)
+        {
+            using (var oconexion = new SqlConnection(dbConnection().ConexionString))
+            {
+                string query = @"
+                    SELECT 
+                        C.*,
+                        CR.IdCredito,
+                        CR.Plazo,
+                        CR.Monto,
+                        CR.FrecuenciaPago,
+                        CR.Producto,
+                        CR.FechaDesembolso,
+                        CR.FechaPrimeraCuota,
+                        CR.DiaPagoMensual
+                    FROM 
+                        CLIENTE C 
+                        LEFT JOIN CREDITO CR ON C.IdCliente = CR.IdCliente
+                    WHERE TipoDocumento LIKE '%' + @Search + '%' OR NroDocumento LIKE '%' + @Search + '%';";
+
+                oconexion.Open();
+
+                var clientesDictionary = new Dictionary<int, Cliente>();
+
+                var resultados = await oconexion.QueryAsync<Cliente, Credito, Cliente>(
+                    query,
+                    (cliente, credito) =>
+                    {
+                        if (!clientesDictionary.TryGetValue(cliente.IdCliente, out var clienteExistente))
+                        {
+                            clienteExistente = cliente;
+                            clienteExistente.Creditos = new List<Credito>();
+                            clientesDictionary.Add(cliente.IdCliente, clienteExistente);
+                        }
+
+                        if (credito != null)
+                        {
+                            credito.cliente = clienteExistente;
+                            clienteExistente.Creditos.Add(credito);
+                        }
+
+                        return clienteExistente;
+                    },
+                    new { Search = search},
+                    splitOn: "IdCredito"
+                );
+
+                return clientesDictionary.Values.ToList();
             }
         }
     }
